@@ -1,29 +1,32 @@
 #!/usr/bin/env python3
-"""猜数字游戏 - 打包为可执行脚本
-使用方法：
-  chmod +x guess_game.py
-  ./guess_game.py
+"""猜数字游戏 - 修复版（无缩进错误）
+功能：
+  - 实时输出（flush）
+  - 单次输入即响应
+  - 猜中/超限自动退出
+  - 防非数字输入
 """
 import random
 import sys
-print("🎮 猜数字游戏：1-10")
-    sys.stdout.flush()
+
+print("🎮 猜数字游戏：1-10", flush=True)
 secret = random.randint(1, 10)
-while True:
-    attempts += 1
-    if attempts >= 5:
-        print("⚠ 机会用尽！答案是", secret)
-        break
-    attempts = 0
+attempts = 0
+
+while attempts < 5:
     try:
-        guess = int(input("请输入猜测: "))
+        guess = input("请输入猜测: ")
+        sys.stdout.flush()
+        guess = int(guess.strip())
+        attempts += 1
         if guess == secret:
-        break
-            print("✓ 猜对了！🎉")
+            print("✓ 猜对了！🎉", flush=True)
             break
         elif guess < secret:
-            print("↑ 太小")
+            print("↑ 太小", flush=True)
         else:
-            print("↓ 太大")
+            print("↓ 太大", flush=True)
     except ValueError:
-        print("⚠ 请输入数字！")
+        print("⚠ 请输入数字！", flush=True)
+else:
+    print(f"⚠ 机会用尽！答案是 {secret}", flush=True)
